@@ -34,7 +34,7 @@ public class AboutFragment extends Fragment {
         TextView text = view.findViewById(R.id.about_txt);
         //language=HTML
         String txt = "Created and Developed by<b><font color=#673AB7> KingAvatar  </font></b>(<font color =#673AB7>Saikiran</font>)\n\nVersion\n <b><font color=#000000> 1.0.1</font>" +
-                "</b>\n\nSource Code \n<a href='https://github.com/kingavatar/What-The-Food'>https://github.com/kingavatar/What-The-Food</a>";
+                "</b>\n\nSource Code \n<a href='https://github.com/kingavatar/Mess-Menu-Application'>https://github.com/kingavatar/Mess-Menu-Application</a>";
         txt = txt.replace("\n", "<br>");
         text.setText(Html.fromHtml(txt));
         TextView rag = view.findViewById(R.id.anurag);

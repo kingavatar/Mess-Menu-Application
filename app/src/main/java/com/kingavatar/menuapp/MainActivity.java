@@ -5,11 +5,13 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -20,7 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity {
-
+    private Boolean exit = false;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
 
     private static String[] PERMISSIONS_STORAGE = {
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                     }
 //                    findViewById(R.id.navigation).getRootView().setBackgroundResource(R.color.white);
+
                     fm.beginTransaction().hide(active).show(fragment3).commit();
                     active = fragment3;
                     return true;
@@ -101,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     .addSharedElement(findViewById(R.id.break_icon_card), findViewById(R.id.break_icon_card).getTransitionName())
                     .addSharedElement(findViewById(R.id.break_gradient_card), findViewById(R.id.break_gradient_card).getTransitionName())
                     .addSharedElement(findViewById(R.id.break_text_card), findViewById(R.id.break_text_card).getTransitionName())
-                    .replace(R.id.frame_layout, fragment2).commit();
+                    .replace(R.id.frame_layout, fragment2).addToBackStack("back_transition").commit();
             fm.beginTransaction().add(R.id.frame_layout, fragment3, "3").hide(fragment3).commit();
             fm.beginTransaction().add(R.id.frame_layout, fragment1, "1").hide(fragment1).commit();
             ((BottomNavigationView) findViewById(R.id.navigation)).setSelectedItemId(R.id.navigation_dashboard);
@@ -112,6 +115,27 @@ public class MainActivity extends AppCompatActivity {
         fm.beginTransaction().remove(fragment2).commit();
         fragment2 = new DashboardFragment();
         fm.beginTransaction().add(R.id.frame_layout, fragment2, "2").hide(fragment2).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment f = fm.findFragmentById(R.id.frame_layout);
+        if (f instanceof CardPageringFragment) super.onBackPressed();
+        else {
+            if (exit) {
+                finish(); // finish activity
+            } else {
+                Toast.makeText(this, "Press Back again to Exit",
+                        Toast.LENGTH_SHORT).show();
+                exit = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        exit = false;
+                    }
+                }, 3 * 1000);
+            }
+        }
     }
 
     @Override
