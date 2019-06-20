@@ -19,18 +19,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.transition.TransitionInflater;
+
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Objects;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-import androidx.transition.TransitionInflater;
 
 
 public class DashboardFragment extends Fragment {
@@ -66,11 +66,7 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        CardView cardView = view.findViewById(R.id.dashboard_card);
-        TextView textView = view.findViewById(R.id.break_text);
-        cardView.setTransitionName(textView.getText() + "_transition");
-        return view;
+        return inflater.inflate(R.layout.fragment_dashboard, container, false);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -142,14 +138,15 @@ public class DashboardFragment extends Fragment {
         cardView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
             @Override
             public void onSwipeDown() {
-                getFragmentManager().beginTransaction()
-                        .addSharedElement(gradient, gradient.getTransitionName())
-                        .addSharedElement(icon, icon.getTransitionName())
-                        .addSharedElement(text, text.getTransitionName())
+                ((MainActivity) getActivity()).getViewpager(cardPageringFragment);
+                /*((MainActivity) getActivity()).getFm().beginTransaction()
+//                        .addSharedElement(gradient, gradient.getTransitionName())
+//                        .addSharedElement(icon, icon.getTransitionName())
+//                        .addSharedElement(text, text.getTransitionName())
                         .replace(R.id.frame_layout, cardPageringFragment)
                         .addToBackStack("transition")
                         .commit();
-
+*/
             }
         });
         final int[] record = {temp};

@@ -18,9 +18,13 @@ import java.util.Iterator;
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "MenuDatabase";
     private static final String TABLE_NAME = "Menu";
-
+    private static int versionNumber = 0;
     DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
+    }
+
+    public static int getVersionNumber() {
+        return versionNumber;
     }
 
     @Override
@@ -30,13 +34,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        versionNumber = i1;
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Menu");
-
         onCreate(sqLiteDatabase);
     }
 
-    public void addItems(Context context, String type, int Day, String des, String item) {
-        ContentValues values = new ContentValues(3);
+    public void insert_blank_rows(int number) {
+        for (int i = 0; i < number; i++) {
+            getWritableDatabase().insert("Menu", "_id", null);
+        }
+    }
+
+    public void addItems(Context context,/*String type, int Day, String des, String item*/ContentValues contentValues, String id) {
+        /*ContentValues values = new ContentValues(3);
         values.put("Type", type);
         values.put("Description", des);
         switch (Day) {
@@ -63,8 +73,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 break;
             default: //Toast.makeText(context,"Wrong File format Upload different File",Toast.LENGTH_LONG).show();
                 break;
-        }
-        getWritableDatabase().insert("Menu", "Type", values);
+        }*/
+        String[] args = {Integer.toString(Integer.parseInt(id) + 1)};
+        Log.d("data", id + " " + args[0]);
+        getWritableDatabase().update("Menu", contentValues, "_id = ?", args);
     }
 
     Cursor getitems(int Day, String Type) throws InvalidFormatException {
@@ -92,7 +104,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 columns[2] = "Sunday";
                 break;
             default:
-                throw new InvalidFormatException("Day was wrong index given " + Integer.toString(Day));
+                throw new InvalidFormatException("Day was wrong index given " + Day);
         }
         String[] whereArgs = new String[]{Type};
         return getReadableDatabase().query("Menu", columns, whereClause, whereArgs, null, null, null);
@@ -142,9 +154,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         StringBuilder sbd = new StringBuilder();
         for (int i = 0; i < 7; i++) {
-            sbd.append(" ").append(Integer.toString(dayscol[i])).append(" ");
+            sbd.append(" ").append(dayscol[i]).append(" ");
         }
-        Log.d("Indexs", "Descol " + Integer.toString(descol) + " Days Col" + sbd.toString() + "Title Index " + Integer.toString(titleindex));
+        Log.d("Indexs", "Descol " + descol + " Days Col" + sbd.toString() + "Title Index " + titleindex);
         String[] typ = {"Breakfast", "Lunch", "Dinner"};
         int temptyp = 0;
         for (int i = titleindex + 1; i <= sheet.getLastRowNum(); i++) {
@@ -190,7 +202,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             //statement.bindString(1,stringBuilder.toString());
             //rowId = statement.executeInsert();
         }
-        Log.d("Indexs", "title index is " + Integer.toString(titleindex) + " " + Integer.toString(descol) + " " + Integer.toString(dayscol[0]));
+        Log.d("Indexs", "title index is " + titleindex + " " + descol + " " + dayscol[0]);
         //getWritableDatabase().insert("Menu","Description",contentValues);
         return "Database Created ";//+"rowId is "+Float.toString(rowId);
     }

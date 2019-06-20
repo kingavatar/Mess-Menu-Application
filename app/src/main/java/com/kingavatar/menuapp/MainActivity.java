@@ -1,7 +1,9 @@
 package com.kingavatar.menuapp;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,24 +14,37 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
     private Boolean exit = false;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
-
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference menu_items = FirebaseFirestore.getInstance().collection("/menu_items/Testing/testing_items");
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     private final Fragment fragment1 = new AboutFragment();
     private final Fragment fragment3 = new UploadFileFragment();
+
+    public FragmentManager getFm() {
+        return fm;
+    }
     private final FragmentManager fm = getSupportFragmentManager();
     private Fragment fragment2 = new DashboardFragment();
     private Fragment active = fragment2;
@@ -97,20 +112,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void getViewpager(Fragment card_fragment) {
+        fragment2 = card_fragment;
+        fm.beginTransaction().replace(R.id.frame_layout, fragment2).addToBackStack("transition").commit();
+        fm.beginTransaction().add(R.id.frame_layout, fragment3, "3").hide(fragment3).commit();
+        fm.beginTransaction().add(R.id.frame_layout, fragment1, "1").hide(fragment1).commit();
+        ((BottomNavigationView) findViewById(R.id.navigation)).setSelectedItemId(R.id.navigation_dashboard);
+    }
     public void getdashboard(String text) {
-        if (((DashboardFragment) fragment2).getType().equals(text)) onBackPressed();
-        else {
+//        if (((DashboardFragment) fragment2).getType().equals(text)) onBackPressed();
+//        else {
             fragment2 = new DashboardFragment();
             ((DashboardFragment) fragment2).setType(text);
             fm.beginTransaction()
-                    .addSharedElement(findViewById(R.id.break_icon_card), findViewById(R.id.break_icon_card).getTransitionName())
-                    .addSharedElement(findViewById(R.id.break_gradient_card), findViewById(R.id.break_gradient_card).getTransitionName())
-                    .addSharedElement(findViewById(R.id.break_text_card), findViewById(R.id.break_text_card).getTransitionName())
+//                    .addSharedElement(findViewById(R.id.break_icon_card), findViewById(R.id.break_icon_card).getTransitionName())
+//                    .addSharedElement(findViewById(R.id.break_gradient_card), findViewById(R.id.break_gradient_card).getTransitionName())
+//                    .addSharedElement(findViewById(R.id.break_text_card), findViewById(R.id.break_text_card).getTransitionName())
                     .replace(R.id.frame_layout, fragment2).addToBackStack("back_transition").commit();
             fm.beginTransaction().add(R.id.frame_layout, fragment3, "3").hide(fragment3).commit();
             fm.beginTransaction().add(R.id.frame_layout, fragment1, "1").hide(fragment1).commit();
             ((BottomNavigationView) findViewById(R.id.navigation)).setSelectedItemId(R.id.navigation_dashboard);
-        }
+//        }
     }
 
     public void after_upload() {
@@ -119,6 +141,33 @@ public class MainActivity extends AppCompatActivity {
         fm.beginTransaction().add(R.id.frame_layout, fragment2, "2").hide(fragment2).commit();
     }
 
+    public String getmenu_items() {
+        final DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
+        dataBaseHelper.onUpgrade(dataBaseHelper.getWritableDatabase(), DataBaseHelper.getVersionNumber(), DataBaseHelper.getVersionNumber() + 1);
+        dataBaseHelper.insert_blank_rows(42);
+        menu_items.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    ContentValues contentValues;
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        contentValues = new ContentValues();
+                        contentValues.put("Type", document.getString("Day"));
+                        contentValues.put("Description", document.getString("Description"));
+                        contentValues.put("Monday", document.getString("Monday"));
+                        contentValues.put("Tuesday", document.getString("Tuesday"));
+                        contentValues.put("Wednesday", document.getString("Wednesday"));
+                        contentValues.put("Thursday", document.getString("Thursday"));
+                        contentValues.put("Friday", document.getString("Friday"));
+                        contentValues.put("Saturday", document.getString("Saturday"));
+                        contentValues.put("Sunday", document.getString("Sunday"));
+                        dataBaseHelper.addItems(getApplicationContext(), contentValues, document.getId());
+                    }
+                }
+            }
+        });
+        return "Database Downloaded";
+    }
     @Override
     public void onBackPressed() {
         Fragment f = fm.findFragmentById(R.id.frame_layout);
@@ -140,9 +189,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -158,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
         fm.beginTransaction().add(R.id.frame_layout, fragment3, "3").hide(fragment3).commit();
         fm.beginTransaction().add(R.id.frame_layout, fragment1, "1").hide(fragment1).commit();
         fm.beginTransaction().add(R.id.frame_layout, fragment2, "2").commit();
+        //getmenu_items();
     }
 //    private boolean loadFragment(Fragment fragment) {
 //        //switching fragment

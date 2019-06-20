@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/dashboard_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,10 @@
         app:cardCornerRadius="12dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true">
-
+        <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:src="@drawable/orange_gradient"/>-->
         <ImageView
             android:id="@+id/break_gradient"
             android:layout_width="match_parent"
@@ -55,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal" />
         </LinearLayout>
-    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

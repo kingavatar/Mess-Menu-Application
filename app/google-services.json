@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "659343561759",
+    "firebase_url": "https://what-the-food-faa6a.firebaseio.com",
+    "project_id": "what-the-food-faa6a",
+    "storage_bucket": "what-the-food-faa6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659343561759:android:605880123b2e8468",
+        "android_client_info": {
+          "package_name": "com.kingavatar.menuapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "659343561759-tvd6khpto07s62ju1emo4pf0ouh4bnfa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kingavatar.menuapp",
+            "certificate_hash": "9e19af99449c07652baff06dce28e881d58a1188"
+          }
+        },
+        {
+          "client_id": "659343561759-ltq7se3fkv026mjv9imfa642pqd8o941.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDt7NRjCOvkMa-og86gjsw3VZGcTj-Wl2A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "659343561759-ltq7se3fkv026mjv9imfa642pqd8o941.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
