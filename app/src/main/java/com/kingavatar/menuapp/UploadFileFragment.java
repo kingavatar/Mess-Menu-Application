@@ -19,16 +19,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import java.io.IOException;
 import java.util.Objects;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -126,6 +126,7 @@ public class UploadFileFragment extends Fragment {
                                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                             }
                             toast_msg = mydatabase.excelDatabase(sheet);
+                            mydatabase.close();
                             return toast_msg;
                         }
 
@@ -155,8 +156,10 @@ public class UploadFileFragment extends Fragment {
             try (Cursor cursor = applicationContext.getContentResolver().query(uri, null, null, null, null)) {
                 if (cursor != null && cursor.moveToFirst()) {
                     result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                    cursor.close();
                 }
             }
+
         }
         if (result == null) {
             result = uri.getPath();

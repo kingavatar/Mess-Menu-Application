@@ -10,8 +10,8 @@
     </style>
 
     <style name="AppTheme.Launcher">
-        <item name="android:background">@drawable/splash</item>
-        <item name="colorPrimaryDark">#7BB6DF</item>
+        <item name="android:background">@drawable/splash_screen</item>
+        <item name="colorPrimaryDark">#FFFFFF</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowContentTransitions">true</item>
@@ -30,5 +30,14 @@
     <style name="toggleButton" parent="AppTheme.NoActionBar">
         <item name="android:buttonStyleToggle">@style/Widget.Button.Toggle</item>
         <item name="android:textColor">@drawable/toggle_text_color</item>
+    </style>
+
+    <style name="AuthenticationTheme" parent="FirebaseUI">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorAccent">@color/purple</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+        <item name="colorControlHighlight">@color/purple</item>
     </style>
 </resources>

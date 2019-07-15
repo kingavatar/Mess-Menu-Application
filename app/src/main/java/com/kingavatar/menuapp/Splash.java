@@ -14,8 +14,8 @@ public class Splash extends AppCompatActivity {
         Thread logoTimer = new Thread() {
             public void run() {
                 try {
-                    sleep(100);
-                    Intent menuIntent = new Intent(Splash.this, MainActivity.class);
+                    sleep(25);
+                    Intent menuIntent = new Intent(Splash.this, MainActivity.class);//MainActivity.class);
                     startActivity(menuIntent);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

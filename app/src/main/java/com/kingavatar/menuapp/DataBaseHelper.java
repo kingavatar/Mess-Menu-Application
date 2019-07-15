@@ -206,4 +206,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         //getWritableDatabase().insert("Menu","Description",contentValues);
         return "Database Created ";//+"rowId is "+Float.toString(rowId);
     }
+
+    @Override
+    protected void finalize() throws Throwable {
+        this.close();
+        super.finalize();
+    }
 }

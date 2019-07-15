@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AboutFragment">
+    tools:context=".ProfileFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/about_card"
@@ -38,32 +38,4 @@
     </androidx.cardview.widget.CardView>
 
 
-    <TextView
-        android:id="@+id/about_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/about_card"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:autoLink="web"
-        android:fontFamily="@font/robotoslab_regular"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="18dp" />
-
-    <TextView
-        android:id="@+id/anurag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
-        android:autoLink="web"
-        android:fontFamily="@font/robotoslab_regular"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="15sp" />
 </RelativeLayout>
